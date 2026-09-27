@@ -1,0 +1,110 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>勁戰四代拆裝學徒</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+
+<div id="app">
+  <div id="stage" aria-label="3D 修車廠場景"></div>
+
+  <div id="hud" hidden>
+    <header id="topbar">
+      <div class="brand"><span class="brand-model">勁戰四代</span><span class="brand-title">拆裝學徒</span></div>
+      <ol class="phases" aria-label="進度階段">
+        <li data-phase="dis"><b>1</b>拆解</li>
+        <li data-phase="asm"><b>2</b>組裝</li>
+        <li data-phase="run"><b>3</b>發動</li>
+      </ol>
+      <div class="stats">
+        <div class="stat"><span class="k">時間</span><span id="st-time" class="v">00:00</span></div>
+        <div class="stat"><span class="k">進度</span><span id="st-prog" class="v">0/77</span></div>
+        <div class="stat"><span class="k">失誤</span><span id="st-err" class="v">0</span></div>
+      </div>
+      <nav class="acts" aria-label="操作">
+        <button id="btn-hint" class="act" type="button">提示</button>
+        <button id="btn-demo" class="act" type="button">師傅示範</button>
+        <button id="btn-xray" class="act" type="button" aria-pressed="false">透視</button>
+        <button id="btn-view" class="act" type="button">視角</button>
+        <button id="btn-order" class="act only-narrow" type="button">工單</button>
+        <button id="btn-book" class="act" type="button">零件圖鑑</button>
+        <button id="btn-sound" class="act" type="button" aria-pressed="true">音效</button>
+        <button id="btn-menu" class="act" type="button">選單</button>
+      </nav>
+    </header>
+
+    <div id="viewmenu" class="pop" hidden></div>
+
+    <aside id="drawer" aria-label="工具抽屜">
+      <h2 class="drawer-h">工具抽屜 <span class="drawer-hint">1–9 快速切換</span></h2>
+      <div id="tools"></div>
+    </aside>
+
+    <aside id="order" aria-label="維修工單"></aside>
+
+    <div id="master" aria-live="polite">
+      <div class="avatar" aria-hidden="true">德</div>
+      <div class="bubble"><span class="who">阿德師</span><p id="master-text"></p></div>
+    </div>
+
+    <div id="freebar" hidden></div>
+    <div id="runpanel" hidden></div>
+    <div id="stroke" hidden></div>
+  </div>
+
+  <div id="tag" hidden></div>
+  <div id="overlay"></div>
+  <div id="boot">
+    <div class="boot-card">
+      <div class="boot-t">勁戰四代・拆裝學徒</div>
+      <div class="boot-s" id="boot-status">正在載入 3D 引擎…</div>
+    </div>
+  </div>
+</div>
+
+<script src="js/util.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/parts-data.js"></script>
+<script src="js/model-base.js"></script>
+<script src="js/model-body.js"></script>
+<script src="js/model-chassis.js"></script>
+<script src="js/model-engine.js"></script>
+<script src="js/model-drive.js"></script>
+<script src="js/model-misc.js"></script>
+<script src="js/scooter.js"></script>
+<script src="js/workshop.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/minigames.js"></script>
+<script src="js/run.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+<script type="module">
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+  import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+  import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+  import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+  window.THREE = THREE;
+  CY.lib = { OrbitControls, RoomEnvironment, RoundedBoxGeometry, mergeGeometries };
+  CY.main();
+</script>
+<script>
+  // 3D 引擎載入失敗（離線或被擋）時的提示
+  setTimeout(function () {
+    if (!window.THREE) {
+      var s = document.getElementById('boot-status');
+      if (s) s.textContent = '3D 引擎載入失敗：這個遊戲需要網路連線來載入 three.js，請確認網路後重新整理。';
+    }
+  }, 12000);
+</script>
